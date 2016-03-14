@@ -16,7 +16,7 @@
 YunClient net;
 MQTTClient client;
 
-int averages[CHANNELS] = { 1012, 886, 779, 653 };
+int averages[CHANNELS] = { 1010, 885, 775, 645 };
 int ch[CHANNELS] = {-1, -1, -1, -1};
 
 void setup() {
@@ -43,6 +43,7 @@ void loop() {
       Serial.print(" ");
     }
     Serial.println();
+    delay(100);
   } else {
     for(int i=0; i<CHANNELS; i++) {
       int v = readChannel(i);
