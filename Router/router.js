@@ -6,17 +6,17 @@ var client = mqtt.connect("mqtt://grafik16:grafik16@SERVER:1337", {
 });
 
 var inputs = [
-  "a",
-  "b",
-  "c",
-  "d",
+  "i1",
+  "i2",
+  "i3",
+  "i4",
 ];
 
 var outputs = [
-  "e",
-  "f",
-  "g",
-  "h"
+  "o1",
+  "o2",
+  "o3",
+  "o4"
 ];
 
 var map = {};
@@ -39,12 +39,15 @@ client.on('connect', function(){
         var outName = outputs[nOut-1];
 
         if(nIn == 0 && nOut > 0) {
-          console.log('rem:', map[outName], nOut);
           delete map[outName];
         } else if(nIn > 0 && nOut > 0) {
           map[outName] = inName;
-          console.log('add:', inName, outName)
         }
+
+        console.log("---")
+        _.each(map, function(_in, _out){
+          console.log(_in, '=>', _out)
+        })
       }
     } else {
       var seg = topic.split('/');
