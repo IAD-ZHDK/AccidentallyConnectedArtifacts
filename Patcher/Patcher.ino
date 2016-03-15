@@ -22,10 +22,10 @@ int ch[CHANNELS] = {-1, -1, -1, -1};
 void setup() {
   Bridge.begin();
   Serial.begin(9600);
-  client.begin("broker.shiftr.io", net);
+  client.begin("192.168.1.183", 1337, net);
 
   Serial.print("connecting...");
-  while (!client.connect("patcher", "try", "try")) {
+  while (!client.connect("patcher", "grafik16", "grafik16")) {
     Serial.print(".");
   }
 
