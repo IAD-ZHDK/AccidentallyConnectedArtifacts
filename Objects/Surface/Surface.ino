@@ -37,14 +37,14 @@ void setup() {
   Bridge.begin();
   Serial.begin(9600);
 
-  client.begin("broker.shiftr.io", net);
+  client.begin("192.168.1.183", 1337, net);
   polulu1.begin(9600);
   polulu2.begin(9600);
 }
 
 void connect() {
   Serial.print("connecting...");
-  while (!client.connect("surface", "try", "try")) {
+  while (!client.connect("surface", "grafik16", "grafik16")) {
     Serial.print(".");
   }
 
@@ -68,18 +68,36 @@ void messageReceived(String topic, String payload, char * bytes, unsigned int le
     value2 = payload.toInt();
   }
 
-  setPole();
+  setSurface();
 }
 
-void setPole() {
-  int pole = map(value1, 0, 1000, 0, 16);
+int getIntensity(int pole, int x, int y) {
+  int posX;
+  int posY;
 
+  if(pole >= 12) {
+    posX = pole - 11;
+    posY = 4;
+  } else if(pole >= 8) {
+    posX = pole - 7;
+    posY = 3;
+  } else if(pole >= 4) {
+    posX = pole - 3;
+    posY = 2;
+  } else {
+    posX = pole;
+    posY = 1;
+  }
+
+  return distance(x, y, posX, posY);
+}
+
+void setSurface() {
+  int x = map(value1, 0, 1000, 1, 4);
+  int y = map(value2, 0, 1000, 1, 4);
+  
   for(int i=0; i<16; i++) {
-    if(i <= pole) {
-      setPosition(i, map(value2, 0, 1000, poles[i].start, poles[i].end));  
-    } else {
-      setPosition(i, poles[i].start);
-    }
+    setPosition(i, map(getIntensity(i, x, y), 0, 1000, poles[i].start, poles[i].end));
   }
 }
 
@@ -95,3 +113,11 @@ void setPosition(int servo, int pos) {
   } 
 }
 
+int distance(float x1, float y1, float x2, float y2) {  
+    float diffx = x1 - x2;
+    float diffy = y1 - y2;
+    float diffx_sqr = square(diffx);
+    float diffy_sqr = square(diffy);
+    float distance = sqrt(diffx_sqr + diffy_sqr);
+    return map(distance, 0, 4, 0, 1000);
+}
