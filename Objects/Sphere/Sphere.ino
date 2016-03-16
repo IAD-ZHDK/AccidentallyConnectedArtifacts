@@ -17,17 +17,27 @@ void setup() {
 
   client.begin("192.168.1.183", 1337, net);
 
-  Serial.println("connecting...");
-  if (client.connect("sphere", "grafik16", "grafik16")) {
-    Serial.println("connected!");
-    client.subscribe("output/sphere/*");
-  }
-  
   motor1.setup();
+}
+
+void connect() {
+  Serial.print("connecting...");
+  while (!client.connect("sphere", "grafik16", "grafik16")) {
+    Serial.print(".");
+  }
+
+  Serial.println("\nconnected!");
+
+  client.subscribe("/output/sphere/*");
 }
 
 void loop() {
   client.loop();
+
+  if(!client.connected()) {
+    connect();
+  }
+  
   motor1.update();
 }
 

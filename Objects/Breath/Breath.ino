@@ -22,17 +22,23 @@ void setup() {
   
   pinMode(RED_LED, OUTPUT);
   client.begin("192.168.1.183", 1337, net);
+}
 
-  Serial.println("connecting...");
-  if (client.connect("breath", "grafik16", "grafik16")) {
-    Serial.println("connected!");
-  } else {
-    Serial.println("not connected!");
+void connect() {
+  Serial.print("connecting...");
+  while (!client.connect("breath", "grafik16", "grafik16")) {
+    Serial.print(".");
   }
+
+  Serial.println("\nconnected!");
 }
 
 void loop() {
   client.loop();
+
+  if(!client.connected()) {
+    connect();
+  }
 
   sensorValue = analogRead(analogInPin);
   outputValue = map(sensorValue, 0, 255, 0, 1000);

@@ -18,15 +18,23 @@ void setup() {
   Serial.begin(9600);
 
   client.begin("192.168.1.183", 1337, net);
+}
 
-  Serial.println("connecting...");
-  if(client.connect("brush", "grafik16", "grafik16")) {
-    Serial.println("connected!"); 
+void connect() {
+  Serial.print("connecting...");
+  while (!client.connect("brush", "grafik16", "grafik16")) {
+    Serial.print(".");
   }
+
+  Serial.println("\nconnected!");
 }
 
 void loop() {
   client.loop();
+
+  if(!client.connected()) {
+    connect();
+  }
 
   int _flex = constrain(map(analogRead(FLEX_PIN), 680, 510, 0, 1000), 0, 1000);
   int _press = constrain(map(analogRead(PRESS_PIN), 0, 180, 0, 1000), 0, 1000);

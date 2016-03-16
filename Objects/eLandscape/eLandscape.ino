@@ -17,15 +17,23 @@ void setup() {
   Serial.begin(9600);
   
   client.begin("192.168.1.183", 1337, net);
+}
 
-  Serial.println("connecting...");
-  if (client.connect("e-landscape", "grafik16", "grafik16")) {
-    Serial.println("connected!");
+void connect() {
+  Serial.print("connecting...");
+  while (!client.connect("e-landscape", "grafik16", "grafik16")) {
+    Serial.print(".");
   }
+
+  Serial.println("\nconnected!");
 }
 
 void loop() {
   client.loop();
+
+  if(!client.connected()) {
+    connect();
+  }
 
   int _input1 = constrain(map(analogRead(INPUT1), 500, 1023, 0, 1000), 0, 1000);
   int _input2 = constrain(map(analogRead(INPUT2), 500, 1023, 0, 1000), 0, 1000);

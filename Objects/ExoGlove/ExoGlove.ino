@@ -14,20 +14,25 @@ int flexSensorPin3 = A2; // mitte
 void setup() {
   Bridge.begin();
   Serial.begin(9600);
+  
   client.begin("192.168.1.183", 1337, net);
-
-  Serial.println("connecting...");
-
-  if (client.connect("exo-glove", "grafik16", "grafik16")) {
-    Serial.println("connected!");
-  } else {
-    Serial.println("not connected!");
-  }
 }
 
+void connect() {
+  Serial.print("connecting...");
+  while (!client.connect("exo-glove", "grafik16", "grafik16")) {
+    Serial.print(".");
+  }
+
+  Serial.println("\nconnected!");
+}
 
 void loop() {
   client.loop();
+
+  if(!client.connected()) {
+    connect();
+  }
 
   int flexSensorReading1 = analogRead(flexSensorPin1);
   int flexSensorReading2 = analogRead(flexSensorPin2);
