@@ -21,10 +21,10 @@ void setup() {
   Serial.begin(9600);
   
   pinMode(RED_LED, OUTPUT);
-  client.begin("broker.shiftr.io", net);
+  client.begin("192.168.1.183", 1337, net);
 
   Serial.println("connecting...");
-  if (client.connect("breath", "try", "try")) {
+  if (client.connect("breath", "grafik16", "grafik16")) {
     Serial.println("connected!");
   } else {
     Serial.println("not connected!");
@@ -43,10 +43,10 @@ void loop() {
   analogWrite(RED_LED, constrain(value, 0, 255));
 
   if (value > 0 && millis() - lastTime > 500) {
-    int value1 = constrain(map(value, 0, 255, 0, 1000), 0, 1000);
+    int value1 = constrain(map(value, 0, 150, 0, 1000), 0, 1000);
     client.publish("/input/breath/value1", String(value1));
 
-    int value2 = constrain(map(value, 70, 255, 0, 1000), 0, 1000);
+    int value2 = constrain(map(value, 150, 300, 0, 1000), 0, 1000);
     client.publish("/input/breath/value2", String(value2));
 
     lastTime = millis();
