@@ -11,6 +11,9 @@ int flexSensorPin1 = A0; // links
 int flexSensorPin2 = A1; // rechts
 int flexSensorPin3 = A2; // mitte
 
+int finger1;
+int finger2;
+
 void setup() {
   Bridge.begin();
   Serial.begin(9600);
@@ -41,9 +44,16 @@ void loop() {
   int value2 = constrain(map(flexSensorReading2, 540, 670, 0, 1000), 0, 1000);
 
   if (millis() - lastMillis > 500) {
-    client.publish("input/exo-glove/value1", String(value1));
-    client.publish("input/exo-glove/value2", String(value2));
+    if(finger1 != value1) {
+      finger1 = value1;
+      client.publish("input/exo-glove/value1", String(value1));  
+    }
 
+    if(finger2 != value2) {
+      finger2 = value2;
+      client.publish("input/exo-glove/value2", String(value2));  
+    }
+    
     lastMillis = millis();
   }
 }
