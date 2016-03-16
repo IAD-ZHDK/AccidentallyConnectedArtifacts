@@ -23,13 +23,13 @@ void setup() {
   Bridge.begin();
   Serial.begin(9600);
   
-  client.begin("broker.shiftr.io", net);
+  client.begin("192.168.1.183", 1337, net);
   servoController.begin(9600);
 }
 
 void connect() {
   Serial.print("connecting...");
-  while (!client.connect("scissomat", "try", "try")) {
+  while (!client.connect("scissomat", "grafik16", "grafik16")) {
     Serial.print(".");
   }
 
