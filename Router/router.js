@@ -40,6 +40,9 @@ client.on('connect', function(){
 
         if(nIn == 0 && nOut > 0) {
           delete map[outName];
+
+          client.publish("output/" + outName + "/value1", "0");
+          client.publish("output/" + outName + "/value2", "0");
         } else if(nIn > 0 && nOut > 0) {
           map[outName] = inName;
         }
