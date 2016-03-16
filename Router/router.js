@@ -6,17 +6,17 @@ var client = mqtt.connect("mqtt://grafik16:grafik16@SERVER:1337", {
 });
 
 var inputs = [
-  "i1",
-  "i2",
-  "i3",
-  "i4",
+  "breath",
+  "brush",
+  "exo-glove",
+  "e-landscape",
 ];
 
 var outputs = [
-  "o1",
-  "o2",
-  "o3",
-  "o4"
+  "scissomat",
+  "surface",
+  "vest",
+  "sphere"
 ];
 
 var map = {};

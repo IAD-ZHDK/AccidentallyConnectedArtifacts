@@ -50,7 +50,7 @@ void connect() {
 
   Serial.println("\nconnected!");
 
-  client.subscribe("/outputs/surface/*");
+  client.subscribe("/output/surface/*");
 }
 
 void loop() {
@@ -62,9 +62,9 @@ void loop() {
 }
 
 void messageReceived(String topic, String payload, char * bytes, unsigned int length) {
-  if(topic.equals("/outputs/surface/value1")) {
+  if(topic.equals("/output/surface/value1")) {
     value1 = payload.toInt();
-  } else if(topic.equals("/outputs/surface/value2")) {
+  } else if(topic.equals("/output/surface/value2")) {
     value2 = payload.toInt();
   }
 

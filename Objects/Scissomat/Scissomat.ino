@@ -35,7 +35,7 @@ void connect() {
 
   Serial.println("\nconnected!");
 
-  client.subscribe("/outputs/scissomat/*");
+  client.subscribe("/output/scissomat/*");
 }
 
 void loop() {
@@ -47,9 +47,9 @@ void loop() {
 }
 
 void messageReceived(String topic, String payload, char * bytes, unsigned int length) {
-  if(topic.equals("/outputs/scissomat/value1")) {
+  if(topic.equals("/output/scissomat/value1")) {
     value1 = payload.toInt();
-  } else if(topic.equals("/outputs/scissomat/value2")) {
+  } else if(topic.equals("/output/scissomat/value2")) {
     value2 = payload.toInt();
   }
 
