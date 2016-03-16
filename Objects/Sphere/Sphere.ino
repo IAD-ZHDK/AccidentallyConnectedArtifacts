@@ -42,11 +42,11 @@ void loop() {
 }
 
 void messageReceived(String topic, String payload, char * bytes, unsigned int length) {
-  if (topic.equals("output/sphere/value1")) {
+  if (topic.equals("/output/sphere/value1")) {
     int value = payload.toInt();
     value = map(value, 0, 1000, 0, 255);
     motor1.setSpeed(value);
-  } else if (topic.equals("output/sphere/value2")) {
+  } else if (topic.equals("/output/sphere/value2")) {
     int value = payload.toInt();
     if (abs(value - lastValue) > 400) {
       lastValue = value;

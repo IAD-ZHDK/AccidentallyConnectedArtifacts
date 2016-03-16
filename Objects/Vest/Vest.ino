@@ -24,7 +24,7 @@ void setup()
   Serial.println("connecting...");
   if (client.connect("vest", "try", "try")) {
     Serial.println("connected!");
-    client.subscribe("output/vest/*");
+    client.subscribe("/output/vest/*");
   }
   
   pinMode(VIB_MOTOR_1, OUTPUT);
@@ -39,9 +39,9 @@ void loop() {
 }
 
 void messageReceived(String topic, String payload, char * bytes, unsigned int length) {
-  if(topic.equals("output/vest/value1")){
+  if(topic.equals("/output/vest/value1")){
     location = payload.toInt();
-  } else if(topic.equals("output/vest/value2")){
+  } else if(topic.equals("/output/vest/value2")){
     strength = map(payload.toInt(), 0, 1000, 0, 255);
   }
 
