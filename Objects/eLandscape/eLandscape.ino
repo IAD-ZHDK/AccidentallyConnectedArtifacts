@@ -16,10 +16,10 @@ void setup() {
   Bridge.begin();
   Serial.begin(9600);
   
-  client.begin("broker.shiftr.io", net);
+  client.begin("192.168.1.183", 1337, net);
 
   Serial.println("connecting...");
-  if (client.connect("e-landscape", "try", "try")) {
+  if (client.connect("e-landscape", "grafik16", "grafik16")) {
     Serial.println("connected!");
   }
 }
@@ -31,8 +31,6 @@ void loop() {
   int _input2 = constrain(map(analogRead(INPUT2), 500, 1023, 0, 1000), 0, 1000);
 
   if (millis() - lastMillis > 500) {
-    lastMillis = millis();
-
     if(input1 != _input1) {
       input1 = _input1;
       client.publish("input/e-landscape/value1", String(input1));
@@ -42,6 +40,8 @@ void loop() {
       input2 = _input2;
       client.publish("input/e-landscape/value2", String(input2));
     }
+
+    lastMillis = millis();
   }
 }
 

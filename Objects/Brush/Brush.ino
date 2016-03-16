@@ -17,10 +17,10 @@ void setup() {
   Bridge.begin();
   Serial.begin(9600);
 
-  client.begin("broker.shiftr.io", net);
+  client.begin("192.168.1.183", 1337, net);
 
   Serial.println("connecting...");
-  if(client.connect("brush", "try", "try")) {
+  if(client.connect("brush", "grafik16", "grafik16")) {
     Serial.println("connected!"); 
   }
 }
@@ -28,12 +28,10 @@ void setup() {
 void loop() {
   client.loop();
 
-  int _flex = constrain(map(analogRead(FLEX_PIN), 500, 750, 0, 1000), 0, 1000);
-  int _press = constrain(map(analogRead(PRESS_PIN), 0, 200, 0, 1000), 0, 1000);
+  int _flex = constrain(map(analogRead(FLEX_PIN), 680, 510, 0, 1000), 0, 1000);
+  int _press = constrain(map(analogRead(PRESS_PIN), 0, 180, 0, 1000), 0, 1000);
 
   if (millis() - lastMillis > 500) {
-    lastMillis = millis();
-
     if(_flex != value1) {
       value1 = _flex;
       client.publish("input/brush/value1", String(value1));  
@@ -43,6 +41,8 @@ void loop() {
       value2 = _press;
       client.publish("input/brush/value2", String(value2));  
     }
+
+    lastMillis = millis();
   }
 }
 
