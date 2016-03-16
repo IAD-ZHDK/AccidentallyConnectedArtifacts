@@ -19,13 +19,7 @@ void setup()
 {
   Bridge.begin();
   Serial.begin(9600);
-  client.begin("broker.shiftr.io", net);
-
-  Serial.println("connecting...");
-  if (client.connect("vest", "try", "try")) {
-    Serial.println("connected!");
-    client.subscribe("/output/vest/*");
-  }
+  client.begin("192.168.1.183", 1337, net);
   
   pinMode(VIB_MOTOR_1, OUTPUT);
   pinMode(VIB_MOTOR_2, OUTPUT);
@@ -34,8 +28,24 @@ void setup()
   pinMode(VIB_MOTOR_5, OUTPUT);
   pinMode(VIB_MOTOR_6, OUTPUT);
 }
+
+void connect() {
+  Serial.print("connecting...");
+  while (!client.connect("vest", "grafik16", "grafik16")) {
+    Serial.print(".");
+  }
+
+  Serial.println("\nconnected!");
+
+  client.subscribe("/output/vest/*");
+}
+
 void loop() {
   client.loop();
+
+  if(!client.connected()) {
+    connect();
+  }
 }
 
 void messageReceived(String topic, String payload, char * bytes, unsigned int length) {
