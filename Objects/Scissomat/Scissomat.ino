@@ -18,6 +18,8 @@ SoftwareSerial servoController(6, 7);
 
 int value1 = 0;
 int value2 = 0;
+
+int pos[3] = {0, 0, 0};
  
 void setup() {
   Bridge.begin();
@@ -44,6 +46,8 @@ void loop() {
   if(!client.connected()) {
     connect();
   }
+
+  setMachine();
 }
 
 void messageReceived(String topic, String payload, char * bytes, unsigned int length) {
@@ -52,8 +56,6 @@ void messageReceived(String topic, String payload, char * bytes, unsigned int le
   } else if(topic.equals("/output/scissomat/value2")) {
     value2 = payload.toInt();
   }
-
-  setMachine();
 }
 
 void setMachine() {
@@ -61,10 +63,12 @@ void setMachine() {
 
   for(int i=0; i<3; i++) {
     if(i <= arms) {
-      setArm(i, value2);  
+      pos[i] = pos[i] + ((value2 - pos[i]) * 0.1);
     } else {
-      setArm(i, 0);
+      pos[i] = pos[i] + ((0 - pos[i]) * 0.1);
     }
+
+    setArm(i, pos[i]);
   }
 }
 
