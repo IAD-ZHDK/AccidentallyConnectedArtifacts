@@ -13,8 +13,8 @@ void setup() {
 void draw() {}
 
 void mousePressed() {
-  client.publish("/output/scissomat/value1", Integer.toString(int(map(mouseX, 0, width, 0, 1000))));
-  client.publish("/output/scissomat/value2", Integer.toString(int(map(mouseY, 0, height, 0, 1000))));
+  client.publish("/output/sphere/value1", Integer.toString(int(map(mouseX, 0, width, 0, 1000))));
+  client.publish("/output/sphere/value2", Integer.toString(int(map(mouseY, 0, height, 0, 1000))));
 }
 
 void messageReceived(String topic, byte[] payload) {}

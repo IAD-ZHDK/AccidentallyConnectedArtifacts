@@ -15,11 +15,11 @@ void setup() {
   Bridge.begin();
   Serial.begin(9600);
 
-  client.begin("broker.shiftr.io", net);
+  client.begin("192.168.1.183", 1337, net);
 
   Serial.println("connecting...");
-  if (client.connect("sphere", "try", "try")) {
-    Serial.println("conncted!");
+  if (client.connect("sphere", "grafik16", "grafik16")) {
+    Serial.println("connected!");
     client.subscribe("output/sphere/*");
   }
   
