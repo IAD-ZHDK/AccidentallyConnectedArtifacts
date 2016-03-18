@@ -3,7 +3,7 @@ import mqtt.*;
 MQTTClient client;
 
 void setup() {
-  size(800, 800);
+  size(600, 600);
   background(0);
   
   client = new MQTTClient(this);
@@ -13,8 +13,13 @@ void setup() {
 void draw() {}
 
 void mousePressed() {
-  client.publish("/output/vest/value1", Integer.toString(int(map(mouseX, 0, width, 0, 1000))));
-  client.publish("/output/vest/value2", Integer.toString(int(map(mouseY, 0, height, 0, 1000))));
+  client.publish("/output/scissomat/value1", Integer.toString(int(map(mouseX, 0, width, 0, 1000))));
+  client.publish("/output/scissomat/value2", Integer.toString(int(map(mouseY, 0, height, 0, 1000))));
+}
+
+void keyPressed() {
+  client.publish("/output/scissomat/value1", "0");
+  client.publish("/output/scissomat/value2", "0");
 }
 
 void messageReceived(String topic, byte[] payload) {}

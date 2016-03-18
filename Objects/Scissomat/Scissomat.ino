@@ -7,9 +7,9 @@ struct arm {
   int start;
   int end;
 } arms[3] = {
-  { 1500, 3900 },
-  { 1600, 4100 },
-  { 1600, 3850 }
+  { 1600, 3600 }, // 1500
+  { 1800, 3800 }, // 1600
+  { 1800, 3550 } // 1600
 };
 
 YunClient net;
@@ -27,6 +27,10 @@ void setup() {
   
   client.begin("192.168.1.183", 1337, net);
   servoController.begin(9600);
+
+  for(int i=0; i<3; i++) {
+    setArm(i, arms[i].start);
+  }
 }
 
 void connect() {
@@ -48,6 +52,7 @@ void loop() {
   }
 
   setMachine();
+  delay(20);
 }
 
 void messageReceived(String topic, String payload, char * bytes, unsigned int length) {
@@ -68,13 +73,28 @@ void setMachine() {
       pos[i] = pos[i] + ((0 - pos[i]) * 0.1);
     }
 
-    setArm(i, pos[i]);
+    if(pos[i] == 0) {
+       setArm(i, pos[i]);
+       powerOff(i);
+    } else {
+      setArm(i, pos[i]);
+    }
   }
 }
 
 void setArm(int arm, int pos) {
   int value = map(pos, 0, 1000, arms[arm].start, arms[arm].end);
   setPosition(arm, value);
+}
+
+void powerOff(int servo) {
+  byte data1 = B00000111; // set first data byte
+
+  servoController.write(0x80); // write start byte
+  servoController.write(0x01); // write device id
+  servoController.write((byte)0x00); // write set parameters command
+  servoController.write((byte)servo); // write servo number
+  servoController.write(data1); // write first data byte
 }
 
 void setPosition(int servo, int pos) {
